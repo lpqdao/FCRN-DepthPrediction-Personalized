@@ -1,6 +1,4 @@
-  GNU nano 2.2.6                                        File: DepthMapPrediction.m
-
-function pred = DepthMapPrediction(imdb, net, varargin)
+ function pred = DepthMapPrediction(imdb, net, varargin)
 
 % Depth prediction (inference) using a trained model.
 % Inputs (imdb) can be either from the NYUDepth_v2 or Make3D dataset, along
