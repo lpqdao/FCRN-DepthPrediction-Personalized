@@ -1,3 +1,5 @@
+  GNU nano 2.2.6                                        File: DepthMapPrediction.m
+
 function pred = DepthMapPrediction(imdb, net, varargin)
 
 % Depth prediction (inference) using a trained model.
@@ -11,13 +13,13 @@ function pred = DepthMapPrediction(imdb, net, varargin)
 %           the benchmark datasets with known ground truth. imdb could
 %           alternatively be any single RGB image of size NxMx3 in [0,255]
 %           or a tensor of D input images NxMx3xD.
-%   - net:  a trained model of type struct (suitable to be converted to a 
-%           DagNN object and successively processed using the DagNN 
-%           wrapper). For testing on arbitrary images, use NYU model for 
+%   - net:  a trained model of type struct (suitable to be converted to a
+%           DagNN object and successively processed using the DagNN
+%           wrapper). For testing on arbitrary images, use NYU model for
 %           indoor and Make3D model for outdoor scenes respectively.
 % -------------------------------------------------------------------------
 
-opts.gpu = false;           % Set to true (false) for GPU (CPU only) support 
+opts.gpu = false;           % Set to true (false) for GPU (CPU only) support
 opts.plot = false;          % Set to true to visualize the predictions during inference
 opts = vl_argparse(opts, varargin);
 
@@ -43,7 +45,7 @@ end
 
 % Get output size for initialization
 varSizes = net.getVarSizes({'data', net.meta.normalization.imageSize});  % get variable sizes
-pred = zeros(varSizes{out}(1), varSizes{out}(2), varSizes{out}(3), size(images, 4));    % initiliaze 
+pred = zeros(varSizes{out}(1), varSizes{out}(2), varSizes{out}(3), size(images, 4));    % initiliaze
 
 if opts.plot, figure(); end
 
@@ -54,18 +56,18 @@ for i = 1:size(images, 4)
     if opts.gpu
         im = gpuArray(im);
     end
-    
+
     % run the CNN
     inputs = {'data', im};
     net.eval(inputs) ;
-    
+
     % obtain prediction
     pred(:,:,i) = gather(net.vars(out).value);
-    
+
     % visualize results
     if opts.plot
         colormap jet
-        if ~isempty(groundTruth)
+        if ~isempty(groundTruth) %%id groundTruth is not empty
             subplot(1,3,1), imagesc(uint8(images(:,:,:,i))), title('RGB Input'), axis off
             subplot(1,3,2), imagesc(groundTruth(:,:,i)), title('Depth Ground Truth'), axis off
             subplot(1,3,3), imagesc(pred(:,:,i)), title('Depth Prediction'), axis off
@@ -75,4 +77,4 @@ for i = 1:size(images, 4)
         end
         drawnow;
     end
-end
+ end
