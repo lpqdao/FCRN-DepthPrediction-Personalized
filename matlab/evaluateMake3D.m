@@ -1,3 +1,5 @@
+  GNU nano 2.2.6                                                                                                                                                                                                                                                                           File: evaluateMake3D.m
+
 function evaluateMake3D
 
 % Evaluation of depth prediction on Make3D dataset.
@@ -7,7 +9,7 @@ function evaluateMake3D
 % -------------------------------------------------------------------------
 
 % Set your matconvnet path here:
-matconvnet_path = '../../matconvnet-1.0-beta20';
+matconvnet_path = '../../matconvnet-1.0-beta25';
 setupMatConvNet(matconvnet_path);
 
 % -------------------------------------------------------------------------
@@ -33,9 +35,9 @@ testSet.images = imdb.images(:,:,:, imdb.set == 2);
 testSet.depths = imdb.depths(:,:, imdb.set == 2);
 
 % resize images to input resolution (equal to round(opts.imageSize/2))
-testSet.images = imresize(testSet.images, net.meta.normalization.imageSize(1:2), opts.interp);    
+testSet.images = imresize(testSet.images, net.meta.normalization.imageSize(1:2), opts.interp);
 % resize depth to opts.imageSize resolution
-testSet.depths = imresize(testSet.depths, opts.imageSize, opts.interp);     
+testSet.depths = imresize(testSet.depths, opts.imageSize, opts.interp);
 
 % -------------------------------------------------------------------------
 % Evaluate network
@@ -48,7 +50,7 @@ predictions = imresize(predictions, [size(testSet.depths,1), size(testSet.depths
 
 % Error calculation
 c1_mask = testSet.depths > 0 & testSet.depths < 70;
-errors = error_metrics(predictions, testSet.depths, c1_mask);
+errors = error_metrics(predictions, testSet.depths, c1_mask, testSet, net, netOpts);
 
 % Save results
 fprintf('\nsaving predictions...');
@@ -74,7 +76,7 @@ end
 
 if ~exist(opts.dataDirDepths, 'dir')
     fprintf('downloading Make3D testing depth maps (~22 MB)...');
-    mkdir(opts.dataDirDepths);   
+    mkdir(opts.dataDirDepths);
     untar('http://www.cs.cornell.edu/~asaxena/learningdepth/Test134Depth.tar.gz', fileparts(opts.dataDirDepths));
     fprintf('done.\n');
 end
@@ -114,4 +116,9 @@ if ~exist(filename, 'file')
 end
 
 net = load(filename);
+
+
+
+
+
 
