@@ -35,9 +35,9 @@ groundTruth = [];
 montage(images(:,:,:,randperm(134, 6)))
 
 varSizes = net.getVarSizes({'data', net.meta.normalization.imageSize});
-relArr = zeros(varSizes{out}(1), varSizes{out}(2), varSizes{out}(3), size(images, 4));    % initiliaze
-rmsArr = zeros(varSizes{out}(1), varSizes{out}(2), varSizes{out}(3), size(images, 4));    % initiliaze
-lg10Arr= zeros(varSizes{out}(1), varSizes{out}(2), varSizes{out}(3), size(images, 4));    % initiliaze
+relArr = zeros(varSizes{out}(1), varSizes{out}(2), varSizes{out}(3), size(images, 4));    % inatialize
+rmsArr = zeros(varSizes{out}(1), varSizes{out}(2), varSizes{out}(3), size(images, 4));    % inatialize
+lg10Arr= zeros(varSizes{out}(1), varSizes{out}(2), varSizes{out}(3), size(images, 4));    % inatialize
 % Mean Absolute Relative Error
 relArr = abs(gt(:) - pred(:)) ./ gt(:);    % compute errors
 relArr(~mask) = 0;                         % mask out invalid ground truth pixels
